@@ -1,0 +1,19 @@
+# ASP.NET Core specific
+bin/
+obj/
+wwwroot/
+*.log
+appsettings*.json
+.vscode/
+*.user
+*.suo
+*.pdb
+
+# Build
+*.dll
+*.exe
+
+# System files
+.DS_Store
+Thumbs.db
+.vs/
