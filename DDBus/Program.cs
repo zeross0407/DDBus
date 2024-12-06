@@ -13,7 +13,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("ReflectlyDatabase"));
+builder.Services.Configure<DatabaseSettings>(builder.Configuration.GetSection("DDBusDatabase"));
 builder.Services.AddSingleton<CRUD_Service<Account>>();
 builder.Services.AddSingleton<CRUD_Service<Stops>>();
 builder.Services.AddSingleton<CRUD_Service<Routes>>();

@@ -19,7 +19,7 @@ namespace DDBus.Services
 
 
 
-    public  class CRUD_Service<T> //: IMongoRepository<T> where T : class
+    public  class CRUD_Service<T>
     {
         private  readonly IMongoCollection<T> _collection;
         public CRUD_Service(IOptions<DatabaseSettings> DatabaseSettings)
@@ -59,7 +59,7 @@ namespace DDBus.Services
             {
                 return propertyInfo.GetValue(entity)?.ToString();
             }
-            return null; // Trường hợp không tìm thấy Id
+            return null;
 
         }
 
@@ -81,13 +81,10 @@ namespace DDBus.Services
 
         public async Task Update_by_UUID_Async(string uuid, T entity)
         {
-            // Tìm tài liệu dựa trên UUID
             var existingEntity = await GetBy_UUID_Async(uuid);
 
-            // Kiểm tra xem tài liệu có tồn tại không
             if (existingEntity != null)
             {
-                // Cập nhật tài liệu bằng UUID
                 await _collection.ReplaceOneAsync(Builders<T>.Filter.Eq("_id", uuid), entity);
             }
             else
@@ -98,13 +95,11 @@ namespace DDBus.Services
 
         public async Task<T> GetBy_UUID_Async(string uuid)
         {
-            // Trả về tài liệu tìm thấy dựa trên UUID
             return await _collection.Find(Builders<T>.Filter.Eq("_id", uuid)).FirstOrDefaultAsync();
         }
 
         public async Task<List<T>> GetBy_UserID_Async(string id)
         {
-            // Trả về tài liệu tìm thấy dựa trên UUID
             return await _collection.Find(Builders<T>.Filter.Eq("userId", new ObjectId(id))).ToListAsync();
         }
 

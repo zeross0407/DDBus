@@ -1,13 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
 using DDBus.Entity;
-
 using DDBus.Services;
-using System.Security.Claims;
-using System.Text;
 
-using System.Text.RegularExpressions;
 
 
 
@@ -34,7 +29,7 @@ namespace Reflectly.Controllers
         public async Task<List<Account>> Get() => await _Account_Service.GetAllAsync();
 
 
-        // GET: api/Account/{id}
+
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> GetAccountById(string id)
         {
@@ -48,7 +43,6 @@ namespace Reflectly.Controllers
             return Ok(account);
         }
 
-        // POST: api/Account
         [HttpPost]
         public async Task<IActionResult> CreateAccount([FromBody] Account newAccount)
         {
@@ -61,7 +55,7 @@ namespace Reflectly.Controllers
             return CreatedAtAction(nameof(GetAccountById), new { id = accountId }, newAccount);
         }
 
-        // PUT: api/Account/{id}
+
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> UpdateAccount(string id, [FromBody] Account updatedAccount)
         {
@@ -75,7 +69,7 @@ namespace Reflectly.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Account/{id}
+
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> DeleteAccount(string id)
         {
@@ -88,6 +82,12 @@ namespace Reflectly.Controllers
             await _Account_Service.DeleteAsync(id);
             return NoContent();
         }
+
+
+
+
+
+
     }
 
 

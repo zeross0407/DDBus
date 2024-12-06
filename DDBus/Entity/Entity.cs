@@ -37,8 +37,8 @@ namespace DDBus.Entity
         [BsonElement("active")]
         public required bool active { get; set; }
 
-        [BsonElement("root")]
-        public required bool root { get; set; }
+        [BsonElement("role")]
+        public required int role { get; set; }
 
     }
 
@@ -51,8 +51,8 @@ namespace DDBus.Entity
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
 
-        [BsonElement("stop_name")]
-        public string? stop_name { get; set; }
+        [BsonElement("name")]
+        public string? name { get; set; }
 
         [BsonElement("lat")]
         public required double lat { get; set; }
@@ -60,8 +60,6 @@ namespace DDBus.Entity
         [BsonElement("lon")]
         public required double lon { get; set; }
 
-        [BsonElement("routes")]
-        public required List<string> routes { get; set; }
     }
 
 
@@ -72,7 +70,7 @@ namespace DDBus.Entity
         [BsonRepresentation(BsonType.ObjectId)]
         public string? Id { get; set; }
 
-        [BsonElement("route_name")]
+        [BsonElement("name")]
         public string? stop_name { get; set; }
 
         [BsonElement("start_time")]
@@ -95,6 +93,27 @@ namespace DDBus.Entity
 
         [BsonElement("route_length")]
         public required double route_length { get; set; }
+    }
+
+
+
+
+    [CollectionName("Notifications")]
+    public class Notifications
+    {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string? Id { get; set; }
+
+        [BsonElement("title")]
+        public string? title { get; set; }
+
+        [BsonElement("description")]
+        public string? description { get; set; }
+
+        [BsonElement("expire_at")]
+        public required DateTime expire_at { get; set; }
+
     }
 
 }

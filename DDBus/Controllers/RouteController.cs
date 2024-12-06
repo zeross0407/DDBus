@@ -15,7 +15,7 @@ namespace DDBus.Controllers
             _routesService = routesService;
         }
 
-        // GET: api/Routes
+   
         [HttpGet]
         public async Task<IActionResult> GetAllRoutes()
         {
@@ -23,7 +23,6 @@ namespace DDBus.Controllers
             return Ok(routes);
         }
 
-        // GET: api/Routes/{id}
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> GetRouteById(string id)
         {
@@ -37,7 +36,7 @@ namespace DDBus.Controllers
             return Ok(route);
         }
 
-        // POST: api/Routes
+
         [HttpPost]
         public async Task<IActionResult> CreateRoute([FromBody] Routes newRoute)
         {
@@ -50,7 +49,7 @@ namespace DDBus.Controllers
             return CreatedAtAction(nameof(GetRouteById), new { id = routeId }, newRoute);
         }
 
-        // PUT: api/Routes/{id}
+
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> UpdateRoute(string id, [FromBody] Routes updatedRoute)
         {
@@ -64,7 +63,7 @@ namespace DDBus.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Routes/{id}
+
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> DeleteRoute(string id)
         {
