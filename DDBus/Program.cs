@@ -52,7 +52,7 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseCors("AllowSpecificOrigins");
+app.UseCors("AllowAll");
 
 app.UseHttpsRedirection();
 
