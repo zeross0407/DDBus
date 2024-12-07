@@ -15,7 +15,6 @@ namespace DDBus.Controllers
             _routesService = routesService;
         }
 
-   
         [HttpGet]
         public async Task<IActionResult> GetAllRoutes()
         {
@@ -30,25 +29,23 @@ namespace DDBus.Controllers
 
             if (route == null)
             {
-                return NotFound(new { Message = "Route not found" });
+                return NotFound(new { Message = "Không tìm thấy tuyến đường" });
             }
 
             return Ok(route);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> CreateRoute([FromBody] Routes newRoute)
         {
             if (newRoute == null)
             {
-                return BadRequest("Invalid route data");
+                return BadRequest("Dữ liệu tuyến đường không hợp lệ");
             }
 
             await _routesService.AddAsync(newRoute);
             return Ok();
         }
-
 
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> UpdateRoute(string id, [FromBody] Routes updatedRoute)
@@ -56,13 +53,12 @@ namespace DDBus.Controllers
             var existingRoute = await _routesService.GetByIdAsync(id);
             if (existingRoute == null)
             {
-                return NotFound(new { Message = "Route not found" });
+                return NotFound(new { Message = "Không tìm thấy tuyến đường" });
             }
 
             await _routesService.UpdateAsync(id, updatedRoute);
             return Ok();
         }
-
 
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> DeleteRoute(string id)
@@ -70,7 +66,7 @@ namespace DDBus.Controllers
             var existingRoute = await _routesService.GetByIdAsync(id);
             if (existingRoute == null)
             {
-                return NotFound(new { Message = "Route not found" });
+                return NotFound(new { Message = "Không tìm thấy tuyến đường" });
             }
 
             await _routesService.DeleteAsync(id);

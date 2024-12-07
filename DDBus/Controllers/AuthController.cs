@@ -37,7 +37,7 @@ namespace DDBus.Controllers
                     ac.role
                 });
             }
-            return Unauthorized();
+            return Unauthorized("Thông tin tài khoản không hợp lệ");
         }
 
         public class LoginModel

@@ -6,17 +6,12 @@ using DDBus.Service;
 using System.Text.RegularExpressions;
 using System.Security.Claims;
 
-
-
-
-
 namespace Reflectly.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-
         private readonly IConfiguration _configuration;
         private readonly CRUD_Service<Account> _Account_Service;
         public AccountController(
@@ -31,20 +26,13 @@ namespace Reflectly.Controllers
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            //if ((await is_root(userId!))) return BadRequest("permission denied");
             return Ok(await _Account_Service.GetAllAsync());
         }
-
 
         //[Authorize]
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> GetAccountById(string id)
         {
-            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            //if ((await is_root(userId!))) return BadRequest("Không có quyền xóa");
-
-
             var account = await _Account_Service.GetByIdAsync(id);
 
             if (account == null)
@@ -60,23 +48,18 @@ namespace Reflectly.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAccount([FromBody] Account newAccount)
         {
-
-            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            //if ((await is_root(userId!))) return BadRequest("Không có quyền xóa");
-
-
             if (newAccount == null)
             {
-                return BadRequest("Invalid account data");
+                return BadRequest("Dữ liệu tài khoản không hợp lệ");
             }
 
-            if (!Regex.IsMatch(newAccount.Email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$") || newAccount.Password.Length<8)
-                return BadRequest("Account Invalid");
+            if (!Regex.IsMatch(newAccount.Email, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$") || newAccount.Password.Length < 8)
+                return BadRequest("Tài khoản không hợp lệ");
 
             var existingUser = await _Account_Service.Get_One_Item_Async(newAccount.Email, "Email");
             if (existingUser != null)
             {
-                return BadRequest("Email Existed.");
+                return BadRequest("Email đã tồn tại");
             }
 
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(newAccount.Password);
@@ -96,18 +79,14 @@ namespace Reflectly.Controllers
             return Ok();
         }
 
-
         //[Authorize]
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> UpdateAccount(string id, [FromBody] Account updatedAccount)
         {
-            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            //if ((await is_root(userId!))) return BadRequest("Không có quyền xóa");
-
             var existingAccount = await _Account_Service.GetByIdAsync(id);
             if (existingAccount == null)
             {
-                return NotFound(new { Message = "Account not found" });
+                return NotFound(new { Message = "Không tìm thấy tài khoản" });
             }
 
             await _Account_Service.UpdateAsync(id, updatedAccount);
@@ -118,18 +97,14 @@ namespace Reflectly.Controllers
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> DeleteAccount(string id)
         {
-            //var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            //if ((await is_root(userId!))) return BadRequest("Không có quyền xóa");
-
             var existingAccount = await _Account_Service.GetByIdAsync(id);
             if (existingAccount == null)
             {
-                return NotFound(new { Message = "Account not found" });
+                return NotFound(new { Message = "Không tìm thấy tài khoản" });
             }
             await _Account_Service.DeleteAsync(id);
             return Ok();
         }
-
 
         private async Task<bool> is_root(string userid)
         {
@@ -137,11 +112,5 @@ namespace Reflectly.Controllers
             if (ac != null && ac.role == 0) return true;
             return false;
         }
-
-
     }
-
-
-
-
 }

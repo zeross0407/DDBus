@@ -22,7 +22,6 @@ namespace DDBus.Controllers
             return Ok(notifications);
         }
 
-
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> GetNotificationById(string id)
         {
@@ -30,7 +29,7 @@ namespace DDBus.Controllers
 
             if (notification == null)
             {
-                return NotFound("Notification not found");
+                return NotFound("Không tìm thấy thông báo");
             }
 
             return Ok(notification);
@@ -41,7 +40,7 @@ namespace DDBus.Controllers
         {
             if (newNotification == null)
             {
-                return BadRequest("Invalid notification data");
+                return BadRequest("Dữ liệu thông báo không hợp lệ");
             }
 
             await _notificationService.AddAsync(newNotification);
@@ -55,7 +54,7 @@ namespace DDBus.Controllers
             var existingNotification = await _notificationService.GetByIdAsync(id);
             if (existingNotification == null)
             {
-                return NotFound(new { Message = "Notification not found" });
+                return NotFound(new { Message = "Không tìm thấy thông báo" });
             }
 
             await _notificationService.UpdateAsync(id, updatedNotification);
@@ -69,7 +68,7 @@ namespace DDBus.Controllers
             var existingNotification = await _notificationService.GetByIdAsync(id);
             if (existingNotification == null)
             {
-                return NotFound("Notification not found");
+                return NotFound("Không tìm thấy thông báo");
             }
 
             await _notificationService.DeleteAsync(id);

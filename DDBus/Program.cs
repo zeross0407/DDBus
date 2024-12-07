@@ -69,7 +69,7 @@ builder.Services.AddSingleton<CRUD_Service<Stops>>();
 builder.Services.AddSingleton<CRUD_Service<Routes>>();
 builder.Services.AddSingleton<TokenService>();
 builder.Services.AddSingleton<CRUD_Service<Notifications>>();
-
+builder.Services.AddHostedService<CleanService>();
 
 
 

@@ -22,7 +22,6 @@ namespace DDBus.Controllers
             return Ok(stops);
         }
 
-
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> GetStopById(string id)
         {
@@ -30,25 +29,23 @@ namespace DDBus.Controllers
 
             if (stop == null)
             {
-                return NotFound(new { Message = "Stop not found" });
+                return NotFound(new { Message = "Không tìm thấy điểm dừng" });
             }
 
             return Ok(stop);
         }
-
 
         [HttpPost]
         public async Task<IActionResult> CreateStop([FromBody] Stops newStop)
         {
             if (newStop == null)
             {
-                return BadRequest("Invalid stop data");
+                return BadRequest("Dữ liệu điểm dừng không hợp lệ");
             }
 
             var stopId = await _stopsService.AddAsync(newStop);
             return Ok();
         }
-
 
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> UpdateStop(string id, [FromBody] Stops updatedStop)
@@ -56,13 +53,12 @@ namespace DDBus.Controllers
             var existingStop = await _stopsService.GetByIdAsync(id);
             if (existingStop == null)
             {
-                return NotFound(new { Message = "Stop not found" });
+                return NotFound(new { Message = "Không tìm thấy điểm dừng" });
             }
 
             await _stopsService.UpdateAsync(id, updatedStop);
             return Ok();
         }
-
 
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> DeleteStop(string id)
@@ -70,31 +66,30 @@ namespace DDBus.Controllers
             var existingStop = await _stopsService.GetByIdAsync(id);
             if (existingStop == null)
             {
-                return NotFound(new { Message = "Stop not found" });
+                return NotFound(new { Message = "Không tìm thấy điểm dừng" });
             }
 
             await _stopsService.DeleteAsync(id);
             return Ok();
         }
 
-
         [HttpPost("addstops")]
-        public async Task<IActionResult> addroutes([FromBody] List<Stops>Stops)
+        public async Task<IActionResult> addroutes([FromBody] List<Stops> Stops)
         {
-            if (Stops == null || Stops.Count <= 0 )
+            if (Stops == null || Stops.Count <= 0)
             {
-                return BadRequest("Invalid stop data");
+                return BadRequest("Dữ liệu điểm dừng không hợp lệ");
             }
             try
             {
-                foreach ( Stops st in Stops)
+                foreach (Stops st in Stops)
                 {
                     await _stopsService.AddAsync(st);
                 }
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
+                return StatusCode(500, $"Lỗi máy chủ nội bộ: {ex.Message}");
             }
             return Ok();
         }
