@@ -46,7 +46,7 @@ namespace DDBus.Controllers
             }
 
             var stopId = await _stopsService.AddAsync(newStop);
-            return CreatedAtAction(nameof(GetStopById), new { id = stopId }, newStop);
+            return Ok();
         }
 
 
@@ -60,7 +60,7 @@ namespace DDBus.Controllers
             }
 
             await _stopsService.UpdateAsync(id, updatedStop);
-            return NoContent();
+            return Ok();
         }
 
 
@@ -74,7 +74,7 @@ namespace DDBus.Controllers
             }
 
             await _stopsService.DeleteAsync(id);
-            return NoContent();
+            return Ok();
         }
 
 

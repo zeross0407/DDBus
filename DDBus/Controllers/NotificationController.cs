@@ -15,7 +15,6 @@ namespace DDBus.Controllers
             _notificationService = notificationService;
         }
 
-        // Lấy danh sách tất cả thông báo
         [HttpGet]
         public async Task<IActionResult> GetAllNotifications()
         {
@@ -23,7 +22,7 @@ namespace DDBus.Controllers
             return Ok(notifications);
         }
 
-        // Lấy thông báo theo ID
+
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> GetNotificationById(string id)
         {
@@ -31,13 +30,12 @@ namespace DDBus.Controllers
 
             if (notification == null)
             {
-                return NotFound(new { Message = "Notification not found" });
+                return NotFound("Notification not found");
             }
 
             return Ok(notification);
         }
 
-        // Tạo một thông báo mới
         [HttpPost]
         public async Task<IActionResult> CreateNotification([FromBody] Notifications newNotification)
         {
@@ -46,8 +44,8 @@ namespace DDBus.Controllers
                 return BadRequest("Invalid notification data");
             }
 
-            var notificationId = await _notificationService.AddAsync(newNotification);
-            return CreatedAtAction(nameof(GetNotificationById), new { id = notificationId }, newNotification);
+            await _notificationService.AddAsync(newNotification);
+            return Ok();
         }
 
         // Cập nhật thông báo
@@ -61,7 +59,7 @@ namespace DDBus.Controllers
             }
 
             await _notificationService.UpdateAsync(id, updatedNotification);
-            return NoContent();
+            return Ok();
         }
 
         // Xóa thông báo
@@ -71,11 +69,11 @@ namespace DDBus.Controllers
             var existingNotification = await _notificationService.GetByIdAsync(id);
             if (existingNotification == null)
             {
-                return NotFound(new { Message = "Notification not found" });
+                return NotFound("Notification not found");
             }
 
             await _notificationService.DeleteAsync(id);
-            return NoContent();
+            return Ok();
         }
     }
 }

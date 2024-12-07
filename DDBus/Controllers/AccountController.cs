@@ -111,7 +111,7 @@ namespace Reflectly.Controllers
             }
 
             await _Account_Service.UpdateAsync(id, updatedAccount);
-            return NoContent();
+            return Ok();
         }
 
         //[Authorize]

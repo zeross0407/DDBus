@@ -45,8 +45,8 @@ namespace DDBus.Controllers
                 return BadRequest("Invalid route data");
             }
 
-            var routeId = await _routesService.AddAsync(newRoute);
-            return CreatedAtAction(nameof(GetRouteById), new { id = routeId }, newRoute);
+            await _routesService.AddAsync(newRoute);
+            return Ok();
         }
 
 
@@ -60,7 +60,7 @@ namespace DDBus.Controllers
             }
 
             await _routesService.UpdateAsync(id, updatedRoute);
-            return NoContent();
+            return Ok();
         }
 
 
@@ -74,7 +74,7 @@ namespace DDBus.Controllers
             }
 
             await _routesService.DeleteAsync(id);
-            return NoContent();
+            return Ok();
         }
     }
 }
