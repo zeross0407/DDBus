@@ -51,6 +51,14 @@ namespace DDBus.Services
             return await _collection.Find(Builders<T>.Filter.Eq("_id", new ObjectId(id))).FirstOrDefaultAsync();
         }
 
+
+        public async Task<T> Get_One_Item_Async(string value, string attribute)
+        {
+            return await _collection.Find(Builders<T>.Filter.Eq(attribute, value)).FirstOrDefaultAsync();
+        }
+
+
+
         public async Task<string> AddAsync(T entity)
         {
             await _collection.InsertOneAsync(entity);
@@ -106,7 +114,7 @@ namespace DDBus.Services
 
         public async Task DeleteAsync(string id)
         {
-            await _collection.DeleteOneAsync(Builders<T>.Filter.Eq("_id", id));
+            await _collection.DeleteOneAsync(Builders<T>.Filter.Eq("_id", new ObjectId(id)));
         }
 
 
