@@ -71,13 +71,13 @@ namespace DDBus.Entity
         public string? Id { get; set; }
 
         [BsonElement("name")]
-        public string? stop_name { get; set; }
+        public string? name { get; set; }
 
         [BsonElement("start_time")]
-        public required DateTime start_time { get; set; }
+        public required string start_time { get; set; }
 
         [BsonElement("end_time")]
-        public required DateTime end_time { get; set; }
+        public required string end_time { get; set; }
 
         [BsonElement("interval")]
         public required int interval { get; set; }
