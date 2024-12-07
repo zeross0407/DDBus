@@ -68,7 +68,7 @@ builder.Services.AddSingleton<CRUD_Service<Account>>();
 builder.Services.AddSingleton<CRUD_Service<Stops>>();
 builder.Services.AddSingleton<CRUD_Service<Routes>>();
 builder.Services.AddSingleton<TokenService>();
-builder.Services.AddSingleton<Notifications>();
+builder.Services.AddSingleton<CRUD_Service<Notifications>>();
 
 
 
