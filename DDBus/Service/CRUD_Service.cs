@@ -106,6 +106,17 @@ namespace DDBus.Services
             return await _collection.Find(Builders<T>.Filter.Eq("_id", uuid)).FirstOrDefaultAsync();
         }
 
+
+        public async Task<List<T>> FindAllAsync(string value, string attribute)
+        {
+            var filter = Builders<T>.Filter.Regex(attribute, new MongoDB.Bson.BsonRegularExpression(value, "i"));
+            return await _collection.Find(filter).ToListAsync();
+        }
+
+
+
+
+
         public async Task<List<T>> GetBy_UserID_Async(string id)
         {
             return await _collection.Find(Builders<T>.Filter.Eq("userId", new ObjectId(id))).ToListAsync();

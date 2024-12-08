@@ -87,5 +87,35 @@ namespace DDBus.Controllers
             }
             return Ok();
         }
+
+
+
+
+
+
+        [HttpGet("findstop")]
+        public async Task<IActionResult> findstop(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest("Dữ liệu điểm dừng không hợp lệ");
+            }
+            try
+            {
+                List<Stops> stops =  await _stopsService.FindAllAsync(name,"name");
+                return Ok(stops);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi máy chủ nội bộ: {ex.Message}");
+            }
+        }
+
+
+
+
+
+
+
     }
 }

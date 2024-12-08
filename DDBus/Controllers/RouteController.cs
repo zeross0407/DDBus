@@ -16,7 +16,7 @@ namespace DDBus.Controllers
             _routesService = routesService;
         }
 
-        [Authorize]
+
         [HttpGet]
         public async Task<IActionResult> GetAllRoutes()
         {
@@ -24,7 +24,7 @@ namespace DDBus.Controllers
             return Ok(routes);
         }
 
-        [Authorize]
+
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> GetRouteById(string id)
         {
@@ -78,5 +78,30 @@ namespace DDBus.Controllers
             await _routesService.DeleteAsync(id);
             return Ok();
         }
+
+
+
+
+        [HttpGet("findroute")]
+        public async Task<IActionResult> findroute(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+            {
+                return BadRequest("Dữ liệu điểm dừng không hợp lệ");
+            }
+            try
+            {
+                List<Routes> routes = await _routesService.FindAllAsync(name, "name");
+                return Ok(routes);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi máy chủ nội bộ: {ex.Message}");
+            }
+        }
+
+
+
+
     }
 }
