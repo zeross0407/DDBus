@@ -73,8 +73,8 @@ namespace DDBus.Entity
         [BsonElement("name")]
         public string? name { get; set; }
 
-        [BsonElement("number")]
-        public required int number { get; set; }
+        [BsonElement("index_route")]
+        public required int index_route { get; set; }
 
         [BsonElement("start_time")]
         public required string start_time { get; set; }
