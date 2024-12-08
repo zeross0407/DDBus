@@ -74,7 +74,7 @@ namespace DDBus.Entity
         public string? name { get; set; }
 
         [BsonElement("index_route")]
-        public required int index_route { get; set; }
+        public required string index_route { get; set; }
 
         [BsonElement("start_time")]
         public required string start_time { get; set; }
