@@ -32,7 +32,7 @@ namespace Reflectly.Controllers
         public async Task<IActionResult> Get()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if ((await is_root(userId!))) return BadRequest("permission denied");
+            if (!(await is_root(userId!))) return BadRequest("permission denied");
             return Ok(await _Account_Service.GetAllAsync());
         }
 
@@ -42,7 +42,7 @@ namespace Reflectly.Controllers
         public async Task<IActionResult> GetAccountById(string id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if ((await is_root(userId!))) return BadRequest("Không có quyền xóa");
+            if (!(await is_root(userId!))) return BadRequest("Không có quyền xóa");
 
 
             var account = await _Account_Service.GetByIdAsync(id);
@@ -62,7 +62,7 @@ namespace Reflectly.Controllers
         {
 
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if ((await is_root(userId!))) return BadRequest("Không có quyền xóa");
+            if (!(await is_root(userId!))) return BadRequest("Không có quyền xóa");
 
 
             if (newAccount == null)
@@ -101,7 +101,7 @@ namespace Reflectly.Controllers
         public async Task<IActionResult> UpdateAccount(string id, [FromBody] Account updatedAccount)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if ((await is_root(userId!))) return BadRequest("Không có quyền xóa");
+            if (!(await is_root(userId!))) return BadRequest("Không có quyền xóa");
 
             var existingAccount = await _Account_Service.GetByIdAsync(id);
             if (existingAccount == null)
@@ -118,7 +118,7 @@ namespace Reflectly.Controllers
         public async Task<IActionResult> DeleteAccount(string id)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if ((await is_root(userId!))) return BadRequest("Không có quyền xóa");
+            if (!(await is_root(userId!))) return BadRequest("Không có quyền xóa");
 
             var existingAccount = await _Account_Service.GetByIdAsync(id);
             if (existingAccount == null)

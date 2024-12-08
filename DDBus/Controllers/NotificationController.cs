@@ -1,5 +1,6 @@
 ﻿using DDBus.Entity;
 using DDBus.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DDBus.Controllers
@@ -15,6 +16,7 @@ namespace DDBus.Controllers
             _notificationService = notificationService;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllNotifications()
         {
@@ -22,6 +24,7 @@ namespace DDBus.Controllers
             return Ok(notifications);
         }
 
+        [Authorize]
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> GetNotificationById(string id)
         {
@@ -35,6 +38,7 @@ namespace DDBus.Controllers
             return Ok(notification);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateNotification([FromBody] Notifications newNotification)
         {
@@ -47,7 +51,7 @@ namespace DDBus.Controllers
             return Ok();
         }
 
-        // Cập nhật thông báo
+        [Authorize]
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> UpdateNotification(string id, [FromBody] Notifications updatedNotification)
         {
@@ -61,7 +65,7 @@ namespace DDBus.Controllers
             return Ok();
         }
 
-        // Xóa thông báo
+        [Authorize]
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> DeleteNotification(string id)
         {

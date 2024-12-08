@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DDBus.Entity;
 using DDBus.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DDBus.Controllers
 {
@@ -15,6 +16,7 @@ namespace DDBus.Controllers
             _routesService = routesService;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllRoutes()
         {
@@ -22,6 +24,7 @@ namespace DDBus.Controllers
             return Ok(routes);
         }
 
+        [Authorize]
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> GetRouteById(string id)
         {
@@ -35,6 +38,7 @@ namespace DDBus.Controllers
             return Ok(route);
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateRoute([FromBody] Routes newRoute)
         {
@@ -47,6 +51,7 @@ namespace DDBus.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> UpdateRoute(string id, [FromBody] Routes updatedRoute)
         {
@@ -60,6 +65,7 @@ namespace DDBus.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> DeleteRoute(string id)
         {

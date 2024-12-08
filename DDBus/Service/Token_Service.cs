@@ -37,7 +37,12 @@ namespace DDBus.Service
                     issuer: _configuration["Jwt:Issuer"],
                     audience: _configuration["Jwt:Audience"],
                     expires: DateTime.Now.AddHours(10),
-                    signingCredentials: credentials
+                    signingCredentials: credentials,
+                    claims: new[]
+                    {
+                    new Claim(JwtRegisteredClaimNames.Sub, user_id),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    }
                 );
             return jwt_handler.WriteToken(token);
         }

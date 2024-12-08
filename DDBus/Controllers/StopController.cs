@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using DDBus.Entity;
 using DDBus.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DDBus.Controllers
 {
@@ -22,6 +23,7 @@ namespace DDBus.Controllers
             return Ok(stops);
         }
 
+
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> GetStopById(string id)
         {
@@ -35,18 +37,8 @@ namespace DDBus.Controllers
             return Ok(stop);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateStop([FromBody] Stops newStop)
-        {
-            if (newStop == null)
-            {
-                return BadRequest("Dữ liệu điểm dừng không hợp lệ");
-            }
 
-            var stopId = await _stopsService.AddAsync(newStop);
-            return Ok();
-        }
-
+        [Authorize]
         [HttpPut("{id:length(24)}")]
         public async Task<IActionResult> UpdateStop(string id, [FromBody] Stops updatedStop)
         {
@@ -60,6 +52,7 @@ namespace DDBus.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> DeleteStop(string id)
         {
@@ -73,8 +66,9 @@ namespace DDBus.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPost("addstops")]
-        public async Task<IActionResult> addroutes([FromBody] List<Stops> Stops)
+        public async Task<IActionResult> addstops([FromBody] List<Stops> Stops)
         {
             if (Stops == null || Stops.Count <= 0)
             {
