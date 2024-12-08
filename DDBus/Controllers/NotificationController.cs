@@ -16,7 +16,6 @@ namespace DDBus.Controllers
             _notificationService = notificationService;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllNotifications()
         {
@@ -24,7 +23,7 @@ namespace DDBus.Controllers
             return Ok(notifications);
         }
 
-        [Authorize]
+
         [HttpGet("{id:length(24)}")]
         public async Task<IActionResult> GetNotificationById(string id)
         {
