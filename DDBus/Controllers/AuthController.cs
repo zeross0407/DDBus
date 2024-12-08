@@ -33,6 +33,8 @@ namespace DDBus.Controllers
 
                 return Ok(new
                 {
+                    ac.Username,
+                    ac.Email,
                     token,
                     ac.role
                 });
