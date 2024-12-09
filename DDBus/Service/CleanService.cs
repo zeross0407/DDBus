@@ -39,7 +39,7 @@
             try
             {
                 List<Notifications> notifications = (await _notificationService.GetAllAsync()).Where(
-                    (notif) => !(notif.expire_at <= DateTime.Now) ).ToList();
+                    (notif) => (notif.expire_at <= DateTime.Now) ).ToList();
                 foreach (var notif in notifications)
                 {
                     await _notificationService.DeleteAsync(notif.Id!);
