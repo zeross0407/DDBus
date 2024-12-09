@@ -118,14 +118,13 @@ namespace DDBus.Controllers
                 if( !string.IsNullOrEmpty(name))
                 {
                     by_name = routes.Where(route => route.name.Contains(name, StringComparison.OrdinalIgnoreCase)|| route.price.ToString() == name).ToList();
-                    stops = await _stopsService.FindAllAsync(name, "name");
                 }
                 else
                 {
                     by_name = routes;
-                    stops = await _stopsService.GetAllAsync();
+                    
                 }
-        
+                stops = await _stopsService.GetAllAsync();
                 foreach (Routes route in by_name)
                 {
                     rs.Add(route);
@@ -171,11 +170,13 @@ namespace DDBus.Controllers
                     foreach(string s in r.inbound_stops)
                     {
                         Stops stops1 = stops.Where(ss => ss.Id == s).FirstOrDefault()!;
+                        if (stops1 != null)
                         rr.inbound_stops.Add(stops1);
                     }
                     foreach (string s in r.outbound_stops)
                     {
                         Stops stops1 = stops.Where(ss => ss.Id == s).FirstOrDefault()!;
+                        if(stops1 !=null)
                         rr.outbound_stops.Add(stops1);
                     }
                     rp.Add(rr);
