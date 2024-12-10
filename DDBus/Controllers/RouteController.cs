@@ -116,7 +116,7 @@ namespace DDBus.Controllers
                 {
                     return Ok(await convert(all_route));
                 }
-                List<Routes> routes_by_name_price  = all_route.Where(route => route.name.Contains(name, StringComparison.OrdinalIgnoreCase) || route.price.ToString() == name).ToList();
+                List<Routes> routes_by_name_price  = all_route.Where(route => route.name.Contains(name, StringComparison.OrdinalIgnoreCase) || route.price.ToString() == name || route.index_route.Contains(name)).ToList();
 
                 List<Stops> stop_by_name = (await _stopsService.GetAllAsync()).Where(stop => stop.name.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
 
