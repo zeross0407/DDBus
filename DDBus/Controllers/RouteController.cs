@@ -110,84 +110,89 @@ namespace DDBus.Controllers
 
             try
             {
+                List<Routes> all_route = await _routesService.GetAllAsync();
 
-                HashSet<Routes> rs = new HashSet<Routes>();
-                List<Routes> routes = await _routesService.GetAllAsync();
-                List<Stops> stops = [];
-                List<Routes> by_name = [];
-                if( !string.IsNullOrEmpty(name))
+                if (string.IsNullOrEmpty(name))
                 {
-                    by_name = routes.Where(route => route.name.Contains(name, StringComparison.OrdinalIgnoreCase)|| route.price.ToString() == name).ToList();
+                    return Ok(await convert(all_route));
                 }
-                else
-                {
-                    by_name = routes;
-                    
-                }
-                stops = await _stopsService.GetAllAsync();
-                foreach (Routes route in by_name)
-                {
-                    rs.Add(route);
-                }
+                List<Routes> routes_by_name_price  = all_route.Where(route => route.name.Contains(name, StringComparison.OrdinalIgnoreCase) || route.price.ToString() == name).ToList();
 
-                
-                foreach (Stops stop in stops)
+                List<Stops> stop_by_name = (await _stopsService.GetAllAsync()).Where(stop => stop.name.Contains(name, StringComparison.OrdinalIgnoreCase)).ToList();
+
+
+
+
+                foreach (Stops stop in stop_by_name)
                 {
-                    foreach (Routes route in routes)
+                    foreach (Routes route in all_route)
                     {
                         foreach( string s in route.inbound_stops)
                         {
                             if(s == stop.Id)
                             {
-                                rs.Add(route);
+                                routes_by_name_price.Add(route);
                             }
                         }
                         foreach (string s in route.outbound_stops)
                         {
                             if (s == stop.Id)
                             {
-                                rs.Add(route);
+                                routes_by_name_price.Add(route);
                             }
                         }
                     }
                 }
 
-                List<RouteDTO> rp = new List<RouteDTO>();
-                foreach (Routes r in rs)
-                {
-
-                    RouteDTO rr = new RouteDTO { Id = r.Id , end_time = r.end_time ,
-                    index_route = r.index_route ,
-                    interval = r.interval ,
-                    price = r.price ,
-                    name = r.name ,
-                    route_length = r.route_length ,
-                    start_time = r.start_time ,
-                    inbound_stops = [],
-                    outbound_stops = []
-                    };
-
-                    foreach(string s in r.inbound_stops)
-                    {
-                        Stops stops1 = stops.Where(ss => ss.Id == s).FirstOrDefault()!;
-                        if (stops1 != null)
-                        rr.inbound_stops.Add(stops1);
-                    }
-                    foreach (string s in r.outbound_stops)
-                    {
-                        Stops stops1 = stops.Where(ss => ss.Id == s).FirstOrDefault()!;
-                        if(stops1 !=null)
-                        rr.outbound_stops.Add(stops1);
-                    }
-                    rp.Add(rr);
-
-                }
-                return Ok(rp.ToList());
+                routes_by_name_price = routes_by_name_price.ToHashSet().ToList();
+                return Ok( await convert(routes_by_name_price) );
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Lỗi máy chủ nội bộ: {ex.Message}");
             }
+        }
+
+
+
+        private async Task<List<RouteDTO>> convert(List<Routes> routes)
+        {
+            List<Stops> stops = await _stopsService.GetAllAsync();
+            List<RouteDTO> rs = [];
+            foreach (Routes r in routes)
+            {
+
+                RouteDTO rr = new RouteDTO
+                {
+                    Id = r.Id,
+                    end_time = r.end_time,
+                    index_route = r.index_route,
+                    interval = r.interval,
+                    price = r.price,
+                    name = r.name,
+                    route_length = r.route_length,
+                    start_time = r.start_time,
+                    inbound_stops = [],
+                    outbound_stops = []
+                };
+
+                foreach (string s in r.inbound_stops)
+                {
+                    Stops stops1 = stops.Where(ss => ss.Id == s).FirstOrDefault()!;
+                    if (stops1 != null)
+                        rr.inbound_stops.Add(stops1);
+                }
+                foreach (string s in r.outbound_stops)
+                {
+                    Stops stops1 = stops.Where(ss => ss.Id == s).FirstOrDefault()!;
+                    if (stops1 != null)
+                        rr.outbound_stops.Add(stops1);
+                }
+                rs.Add(rr);
+
+            }
+            return rs;
+
         }
 
 
